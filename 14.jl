@@ -116,26 +116,38 @@ end
 
 
 function idem_and_stavim_markers(r::Robot, side::HorizonSide)
-    while isborder(r, side) == false
+    if isborder(r, side) == true
+        obhod_prum(r, side)
+    else
         move!(r, side)
-        while isborder(r, side) == true
+    end
+    br = true
+    while br == true
+        if isborder(r, side) == false
+            putmarker!(r)
+            move!(r, side)
+        else
             putmarker!(r)
             bol = obhod_prum(r, side)
             if bol == false
-                break
+                br = false
             end
         end
-        putmarker!(r)
     end
 end
 
+
 function move_by_markers(r::Robot, side::HorizonSide)
     while ismarker(r) == true
-        while isborder(r, side) == true
+        if isborder(r, side) == true
             obhod_prum(r, side)
+        else
+            move!(r, side)
         end
-        move!(r, side)
     end
+    #if ismarker(r) == false
+    #    move!(r, inverse(side))
+    #end
 end
 
 
@@ -148,5 +160,8 @@ function plus(r::Robot)
     putmarker!(r)
     
 end
+
+    
+
 
     
